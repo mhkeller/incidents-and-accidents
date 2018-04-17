@@ -93,7 +93,7 @@ export default function treeChart (d3) {
         // .merge(nodes)
         .attr('x', d => d.children ? -8 : 8)
         .style('text-anchor', d => d.children ? 'end' : 'start')
-        .text(d => d.data.name);
+        .text(d => d.data.id);
     }
 
     function relayout () {
