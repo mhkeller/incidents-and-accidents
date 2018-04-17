@@ -1,0 +1,15 @@
+{
+  "rootUrl": "https://bloomberg.github.io",
+  "slug": "kong",
+  "title": "kong",
+  "seoTitle": "kong",
+  "fbTitle": "kong",
+  "seoDek": "A sample starter project using the wsk build system.",
+  "fbDek": "A sample starter project using the wsk build system.",
+  "seoKeywords": "build system, wsk, example, starter, scaffold",
+  "twText": "A sample starter project using the wsk build system.",
+  "fbImg": "wsk.gif",
+  "twImg": "wsk.gif",
+  "twHandle": "@bbgvisualdata",
+  "storyCopy": "<[~ h.import('src/html/story-copy.aml') ]>"
+}
