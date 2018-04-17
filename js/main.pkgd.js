@@ -17925,7 +17925,7 @@ function treeChart(d3) {
       }).style('text-anchor', function (d) {
         return d.children ? 'end' : 'start';
       }).text(function (d) {
-        return d.data.name;
+        return d.data.id;
       });
     }
 
@@ -17948,6 +17948,13 @@ function treeChart(d3) {
   return chart;
 }
 
+var idCounter = 0;
+
+var uniqueId = function uniqueId(prefix) {
+  var id = idCounter++ + '';
+  return prefix ? prefix + id : id;
+};
+
 /* --------------------------------------------
  *
  * Write your JavaScript here.
@@ -17956,50 +17963,82 @@ function treeChart(d3) {
  * --------------------------------------------
  */
 
-var treeData = {
-  name: 'Eve',
-  children: [{
-    name: 'Cain'
+window.testData = {
+  "name": "Eve",
+  "children": [{
+    "name": "Cain"
   }, {
-    name: 'Seth',
-    children: [{
-      name: 'Enos'
+    "name": "Seth",
+    "children": [{
+      "name": "Enos"
     }, {
-      name: 'Noam'
+      "name": "Noam"
     }]
   }, {
-    name: 'Abel'
+    "name": "Abel"
   }, {
-    name: 'Awan',
-    children: [{
-      name: 'Enoch'
+    "name": "Awan",
+    "children": [{
+      "name": "Enoch"
     }]
   }, {
-    name: 'Azura'
+    "name": "Azura"
   }]
 };
 
 var myTree = treeChart(d3);
 
-var sel = select('#container').datum(treeData).call(myTree);
+// let parentId;
+var currentId = uniqueId('q');
 
-setTimeout(function () {
-  var newData = {
-    name: 'lulz',
-    children: [{
-      name: 'hi'
-    }, {
-      name: 'Awan',
-      children: [{
-        name: 'Enoch'
-      }]
-    }, {
-      name: 'Azura'
-    }]
+var treeData = {
+  id: currentId,
+  children: []
+};
+
+updateChart();
+
+select('#input-button').on('click', function (e) {
+  var query = document.getElementById('input-textarea').value;
+  saveQuery(query);
+});
+
+function saveQuery(query) {
+  var node = traverse(treeData, currentId);
+  if (!node.children) {
+    node.children = [];
+  }
+  node.children.push(newChild(query));
+  updateChart();
+}
+
+function newChild(query) {
+  return {
+    id: uniqueId('q'),
+    query: query
   };
-  sel.datum(newData).call(myTree);
-  console.log('fired');
-}, 3000);
+}
+
+function traverse(node, target) {
+  var result = void 0;
+  if (node.id === target) {
+    result = node;
+  }
+  if (node.children) {
+    for (var i = 0; i < node.children.length; i++) {
+      var r = traverse(node.children[i], target);
+      if (r !== undefined) {
+        result = r;
+        break;
+      }
+    }
+  }
+  return result;
+}
+
+function updateChart() {
+  select('#tree-container').datum(treeData).call(myTree);
+}
 
 }());
 //# sourceMappingURL=main.pkgd.js.map

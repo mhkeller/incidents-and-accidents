@@ -1,1 +1,35 @@
-*{box-sizing:border-box}html{font-size:18px}.node{cursor:pointer}.node circle{fill:#fff;stroke:#4682b4;stroke-width:1.5px}.node text{font:10px sans-serif}.link{fill:none;stroke:#ccc;stroke-width:1.5px}
+#input-container {
+  margin-bottom: 21px;
+}
+#input-container textarea {
+  width: 100%;
+  height: 80%;
+}
+#input-container > button {
+  width: 100%;
+  height: 20%;
+}
+#tree-container .node {
+  cursor: pointer;
+}
+#tree-container .node circle {
+  fill: #fff;
+  stroke: #4682b4;
+  stroke-width: 1.5px;
+}
+#tree-container .node text {
+  font: 10px sans-serif;
+}
+#tree-container .link {
+  fill: none;
+  stroke: #ccc;
+  stroke-width: 1.5px;
+}
+* {
+  box-sizing: border-box;
+}
+html {
+  font-size: 18px;
+  font-family: Helvetica, sans-serif;
+}
+/*# sourceMappingURL=styles.css.map */
