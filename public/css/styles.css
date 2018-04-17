@@ -18,7 +18,12 @@
   stroke-width: 1.5px;
 }
 #tree-container .node text {
-  font: 10px sans-serif;
+  font: 14px sans-serif;
+}
+#tree-container .node.active circle {
+  fill: #fc0;
+  stroke: #fc0;
+  stroke-width: 3px;
 }
 #tree-container .link {
   fill: none;

@@ -20,7 +20,7 @@ export default function treeChart (d3) {
 
     // Measure DOM elements and set scales from data accordingly
     function setValues (data) {
-      margin = {top: 0, right: 20, bottom: 20, left: 20};
+      margin = {top: 0, right: 20, bottom: 20, left: 40};
 
       // Set dimensions from div dimensions
       var canvasWidth = this.getBoundingClientRect().width;
@@ -55,10 +55,10 @@ export default function treeChart (d3) {
       const tree = d3.tree()
         .size([height, width - 50]);
 
-      var root = d3.hierarchy(data);
+      var root = tree(d3.hierarchy(data));
 
       let links = g.selectAll('.link')
-        .data(tree(root).links());
+        .data(root.links());
 
       // enter links
       links.enter().append('path')
@@ -78,22 +78,31 @@ export default function treeChart (d3) {
       // Exit nodes
       nodes.exit().remove();
 
-      let enterNodes = nodes.enter().append('g');
+      let enterNodes = nodes.enter()
+        .append('g');
 
-      enterNodes
+      enterNodes.append('text')
+        .attr('dy', 4)
+        .text(d => d.data.id);
+
+      let allNodes = enterNodes
         .merge(nodes)
-        .attr('class', d => 'node' + (d.children ? ' node--internal' : ' node--leaf'))
-        .attr('transform', d => 'translate(' + d.y + ',' + d.x + ')');
+        .attr('class', d => 'node ' + (d.children ? ' node--internal' : ' node--leaf'))
+        .attr('transform', d => 'translate(' + d.y + ',' + d.x + ')')
+        .each(setActive)
+        .on('click', function (d) {
+          allNodes.classed('active', false);
+          d3.select(this).classed('active', true);
+          // TODO, redo with dispatch
+          window.currentId = d.data.id;
+        });
+
+      allNodes.select('text')
+        .attr('x', d => d.data.children ? -8 : 8)
+        .style('text-anchor', d => d.data.children ? 'end' : 'start');
 
       enterNodes.append('circle')
         .attr('r', 2.5);
-
-      enterNodes.append('text')
-        .attr('dy', 3)
-        // .merge(nodes)
-        .attr('x', d => d.children ? -8 : 8)
-        .style('text-anchor', d => d.children ? 'end' : 'start')
-        .text(d => d.data.id);
     }
 
     function relayout () {
@@ -104,13 +113,17 @@ export default function treeChart (d3) {
     d3.select(window).on('resize.treeFactory', relayoutDebounced);
   }
 
-  // chart.xKey = function (__) {
-  //   if (typeof __ === 'undefined') {
-  //     return __;
-  //   }
-  //   xKey = __;
-  //   return chart;
-  // };
+  function setActive (d) {
+    d3.select(this).classed('active', d.data.id === window.currentId);
+  }
+
+  chart.margin = function (__) {
+    if (typeof __ === 'undefined') {
+      return __;
+    }
+    margin = __;
+    return chart;
+  };
 
   return chart;
 }

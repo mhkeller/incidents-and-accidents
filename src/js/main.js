@@ -9,49 +9,15 @@
 import * as d3 from 'd3';
 // import traverse from 'traverse';
 import treeFactory from './modules/treeFactory.js';
+import traverse from './modules/traverse.js';
 import uniqueId from './modules/uniqueId.js';
-
-window.testData = {
-  "name": "Eve",
-  "children": [
-    {
-      "name": "Cain"
-    },
-    {
-      "name": "Seth",
-      "children": [
-        {
-          "name": "Enos"
-        },
-        {
-          "name": "Noam"
-        }
-      ]
-    },
-    {
-      "name": "Abel"
-    },
-    {
-      "name": "Awan",
-      "children": [
-        {
-          "name": "Enoch"
-        }
-      ]
-    },
-    {
-      "name": "Azura"
-    }
-  ]
-};
 
 const myTree = treeFactory(d3);
 
-// let parentId;
-let currentId = uniqueId('q');
+window.currentId = uniqueId('q');
 
 let treeData = {
-  id: currentId,
+  id: window.currentId,
   children: []
 };
 
@@ -64,7 +30,7 @@ d3.select('#input-button')
   });
 
 function saveQuery (query) {
-  const node = traverse(treeData, currentId);
+  const node = traverse(treeData, window.currentId);
   if (!node.children) {
     node.children = [];
   }
@@ -73,27 +39,11 @@ function saveQuery (query) {
 }
 
 function newChild (query) {
+  window.currentId = uniqueId('q');
   return {
-    id: uniqueId('q'),
+    id: window.currentId,
     query
   };
-}
-
-function traverse (node, target) {
-  let result;
-  if (node.id === target) {
-    result = node;
-  }
-  if (node.children) {
-    for (var i = 0; i < node.children.length; i++) {
-      let r = traverse(node.children[i], target);
-      if (r !== undefined) {
-        result = r;
-        break;
-      }
-    }
-  }
-  return result;
 }
 
 function updateChart () {

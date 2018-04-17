@@ -17863,7 +17863,7 @@ function treeChart(d3) {
 
     // Measure DOM elements and set scales from data accordingly
     function setValues(data) {
-      margin = { top: 0, right: 20, bottom: 20, left: 20 };
+      margin = { top: 0, right: 20, bottom: 20, left: 40 };
 
       // Set dimensions from div dimensions
       var canvasWidth = this.getBoundingClientRect().width;
@@ -17889,9 +17889,9 @@ function treeChart(d3) {
     function renderChartElements(data) {
       var tree = d3.tree().size([height, width - 50]);
 
-      var root = d3.hierarchy(data);
+      var root = tree(d3.hierarchy(data));
 
-      var links = g.selectAll('.link').data(tree(root).links());
+      var links = g.selectAll('.link').data(root.links());
 
       // enter links
       links.enter().append('path').attr('class', 'link').merge(links).attr('d', d3.linkHorizontal().x(function (d) {
@@ -17910,23 +17910,28 @@ function treeChart(d3) {
 
       var enterNodes = nodes.enter().append('g');
 
-      enterNodes.merge(nodes).attr('class', function (d) {
-        return 'node' + (d.children ? ' node--internal' : ' node--leaf');
+      enterNodes.append('text').attr('dy', 4).text(function (d) {
+        return d.data.id;
+      });
+
+      var allNodes = enterNodes.merge(nodes).attr('class', function (d) {
+        return 'node ' + (d.children ? ' node--internal' : ' node--leaf');
       }).attr('transform', function (d) {
         return 'translate(' + d.y + ',' + d.x + ')';
+      }).each(setActive).on('click', function (d) {
+        allNodes.classed('active', false);
+        d3.select(this).classed('active', true);
+        // TODO, redo with dispatch
+        window.currentId = d.data.id;
+      });
+
+      allNodes.select('text').attr('x', function (d) {
+        return d.data.children ? -8 : 8;
+      }).style('text-anchor', function (d) {
+        return d.data.children ? 'end' : 'start';
       });
 
       enterNodes.append('circle').attr('r', 2.5);
-
-      enterNodes.append('text').attr('dy', 3)
-      // .merge(nodes)
-      .attr('x', function (d) {
-        return d.children ? -8 : 8;
-      }).style('text-anchor', function (d) {
-        return d.children ? 'end' : 'start';
-      }).text(function (d) {
-        return d.data.id;
-      });
     }
 
     function relayout() {
@@ -17937,86 +17942,19 @@ function treeChart(d3) {
     d3.select(window).on('resize.treeFactory', relayoutDebounced);
   }
 
-  // chart.xKey = function (__) {
-  //   if (typeof __ === 'undefined') {
-  //     return __;
-  //   }
-  //   xKey = __;
-  //   return chart;
-  // };
+  function setActive(d) {
+    d3.select(this).classed('active', d.data.id === window.currentId);
+  }
+
+  chart.margin = function (__) {
+    if (typeof __ === 'undefined') {
+      return __;
+    }
+    margin = __;
+    return chart;
+  };
 
   return chart;
-}
-
-var idCounter = 0;
-
-var uniqueId = function uniqueId(prefix) {
-  var id = idCounter++ + '';
-  return prefix ? prefix + id : id;
-};
-
-/* --------------------------------------------
- *
- * Write your JavaScript here.
- *
- * It will get rolled up. On `build`, it gets minified.
- * --------------------------------------------
- */
-
-window.testData = {
-  "name": "Eve",
-  "children": [{
-    "name": "Cain"
-  }, {
-    "name": "Seth",
-    "children": [{
-      "name": "Enos"
-    }, {
-      "name": "Noam"
-    }]
-  }, {
-    "name": "Abel"
-  }, {
-    "name": "Awan",
-    "children": [{
-      "name": "Enoch"
-    }]
-  }, {
-    "name": "Azura"
-  }]
-};
-
-var myTree = treeChart(d3);
-
-// let parentId;
-var currentId = uniqueId('q');
-
-var treeData = {
-  id: currentId,
-  children: []
-};
-
-updateChart();
-
-select('#input-button').on('click', function (e) {
-  var query = document.getElementById('input-textarea').value;
-  saveQuery(query);
-});
-
-function saveQuery(query) {
-  var node = traverse(treeData, currentId);
-  if (!node.children) {
-    node.children = [];
-  }
-  node.children.push(newChild(query));
-  updateChart();
-}
-
-function newChild(query) {
-  return {
-    id: uniqueId('q'),
-    query: query
-  };
 }
 
 function traverse(node, target) {
@@ -18034,6 +17972,54 @@ function traverse(node, target) {
     }
   }
   return result;
+}
+
+var idCounter = 0;
+
+var uniqueId = function uniqueId(prefix) {
+  var id = idCounter++ + '';
+  return prefix ? prefix + id : id;
+};
+
+/* --------------------------------------------
+ *
+ * Write your JavaScript here.
+ *
+ * It will get rolled up. On `build`, it gets minified.
+ * --------------------------------------------
+ */
+
+var myTree = treeChart(d3);
+
+window.currentId = uniqueId('q');
+
+var treeData = {
+  id: window.currentId,
+  children: []
+};
+
+updateChart();
+
+select('#input-button').on('click', function (e) {
+  var query = document.getElementById('input-textarea').value;
+  saveQuery(query);
+});
+
+function saveQuery(query) {
+  var node = traverse(treeData, window.currentId);
+  if (!node.children) {
+    node.children = [];
+  }
+  node.children.push(newChild(query));
+  updateChart();
+}
+
+function newChild(query) {
+  window.currentId = uniqueId('q');
+  return {
+    id: window.currentId,
+    query: query
+  };
 }
 
 function updateChart() {
