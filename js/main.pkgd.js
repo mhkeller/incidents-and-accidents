@@ -17844,8 +17844,8 @@ var debounce = function debounce(func, wait, immediate) {
 };
 
 function treeChart(d3) {
+  var margin = void 0;
   function chart(selection) {
-    var margin = void 0;
     var chartContainer = void 0;
     var svg = void 0;
     var g = void 0;
@@ -17931,7 +17931,7 @@ function treeChart(d3) {
         return d.data.children ? 'end' : 'start';
       });
 
-      enterNodes.append('circle').attr('r', 2.5);
+      enterNodes.append('circle').attr('r', 4.5);
     }
 
     function relayout() {
