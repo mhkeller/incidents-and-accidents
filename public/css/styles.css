@@ -59,6 +59,7 @@
 #tree-container .node text {
   font: 14px sans-serif;
   fill: #ccc;
+  text-shadow: 2px 2px 2px #fff, -3px -3px 2px #fff, -3px 0 2px #fff, 0 -3px 2px #fff;
 }
 #tree-container .node.active circle {
   fill: #fff;

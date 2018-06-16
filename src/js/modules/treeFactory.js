@@ -91,7 +91,7 @@ export default function treeChart (d3) {
         .attr('transform', d => 'translate(' + d.y + ',' + d.x + ')')
         .each(setActive)
         .on('click', function (d) {
-          allNodes.classed('active', false);
+          allNodes.classed('active', false).raise();
           d3.select(this).classed('active', true);
           // TODO, redo with dispatch
           window.currentId = d.data.id;
