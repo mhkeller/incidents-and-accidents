@@ -7,10 +7,11 @@
  */
 
 import * as d3 from 'd3';
-// import traverse from 'traverse';
 import treeFactory from './modules/treeFactory.js';
 import traverse from './modules/traverse.js';
 import uniqueId from './modules/uniqueId.js';
+import queryDb from './modules/queryDb.js';
+import displayResults from './modules/displayResults.js';
 
 const myTree = treeFactory(d3);
 
@@ -26,7 +27,16 @@ updateChart();
 d3.select('#input-button')
   .on('click', e => {
     const query = document.getElementById('input-textarea').value;
-    saveQuery(query);
+    if (query.trim()) {
+      queryDb(query, (err, json) => {
+        if (err) {
+          console.error(err);
+        } else {
+          saveQuery(query);
+          displayResults(json);
+        }
+      });
+    }
   });
 
 function saveQuery (query) {

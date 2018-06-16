@@ -1,5 +1,5 @@
 {
-  "name": "kong",
+  "name": "salmagundi",
   "version": "0.0.0",
   "description": "Experimental sql interface",
   "main": "package.json",
@@ -41,7 +41,7 @@
     "browser-sync": "^2.11.2",
     "chalk": "^1.1.1",
     "chokidar": "^1.4.3",
-    "eslint": "^4.10.0",
+    "eslint": "^4.19.1",
     "eslint-config-standard": "^10.2.1",
     "eslint-plugin-import": "^2.8.0",
     "eslint-plugin-node": "^5.2.1",
@@ -72,8 +72,12 @@
     "node": "^4.4.3"
   },
   "dependencies": {
+    "ajv": "^6.4.0",
+    "codemirror": "^5.37.0",
     "d3": "^5.0.0",
-    "traverse": "^0.6.6"
+    "pg": "^7.4.1",
+    "traverse": "^0.6.6",
+    "virtualized-list": "^2.2.0"
   },
   "repository": {
     "type": "git",
