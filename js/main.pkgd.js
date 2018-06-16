@@ -17981,6 +17981,30 @@ var uniqueId = function uniqueId(prefix) {
   return prefix ? prefix + id : id;
 };
 
+function queryDb(query, cb) {
+  window.fetch("http://localhost:3101?db=mhk&q=" + query).then(function (response) {
+    return response.json();
+  }).then(function (json) {
+    return cb(null, json);
+  }).catch(function (err) {
+    return cb(err);
+  });
+}
+
+var tableContainer = select('#table-container');
+
+function displayResults(json) {
+  var row = tableContainer.selectAll('.table-row').data(json).enter().append('div').classed('table-row', true);
+
+  row.selectAll('.cell').data(function (d) {
+    return Object.keys(d).map(function (q) {
+      return [q, d[q]];
+    });
+  }).enter().append('div').classed('cell', true).html(function (d) {
+    return d.join(':');
+  });
+}
+
 /* --------------------------------------------
  *
  * Write your JavaScript here.
@@ -18002,7 +18026,16 @@ updateChart();
 
 select('#input-button').on('click', function (e) {
   var query = document.getElementById('input-textarea').value;
-  saveQuery(query);
+  if (query.trim()) {
+    queryDb(query, function (err, json) {
+      if (err) {
+        console.error(err);
+      } else {
+        saveQuery(query);
+        displayResults(json);
+      }
+    });
+  }
 });
 
 function saveQuery(query) {
