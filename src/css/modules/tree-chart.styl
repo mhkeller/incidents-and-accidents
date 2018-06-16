@@ -1,17 +1,21 @@
 #tree-container
   .node
     cursor pointer
+    user-select none
     circle
-      fill #fff
-      stroke steelblue
-      stroke-width 1.5px
+      fill #ccc
+      stroke #ccc
+      stroke-width 0
     text
       font 14px sans-serif
+      fill #ccc
     &.active
       circle
-        fill #fc0
-        stroke #fc0
-        stroke-width 3px
+        fill #fff
+        stroke #000
+        stroke-width 2px
+      text
+        fill #000
 
   .link
     fill none

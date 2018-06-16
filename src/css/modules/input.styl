@@ -1,25 +1,30 @@
+$button-color = #54d48b
+
 #input-container
   margin-bottom 21px
   width 100%
   textarea
     width 100%
+    font-size 14px
+    border-radius 5px 5px 0 0
     padding 5px
-    appearance none
+    outline none
     resize vertical
     border 2px solid #000
     margin 0
-    min-height 35px
+    min-height 75px
   > button
     width 100%
-    font-size 21px
-    background #26ff00
+    font-size 16px
+    background $button-color
     border 2px solid #000
     border-top none
     cursor pointer
-    padding-bottom 2px
+    padding 8px
     margin 0
     &:hover
-      text-decoration underline
+      color #000
+      background-color shade($button-color, 8%)
     &:active
       background-color #000
       color #fff

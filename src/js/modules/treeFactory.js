@@ -1,8 +1,8 @@
 import debounce from './debounce.js';
 
 export default function treeChart (d3) {
+  let margin;
   function chart (selection) {
-    let margin;
     let chartContainer;
     let svg;
     let g;
@@ -102,7 +102,7 @@ export default function treeChart (d3) {
         .style('text-anchor', d => d.data.children ? 'end' : 'start');
 
       enterNodes.append('circle')
-        .attr('r', 2.5);
+        .attr('r', 4.5);
     }
 
     function relayout () {
