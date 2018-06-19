@@ -1,7 +1,7 @@
-kong
+incidents and accidents
 ===
 
-> experimental sql interface
+> hints and allegations
 
 ```sh
 npm install && npm run view

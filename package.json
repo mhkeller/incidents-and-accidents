@@ -1,5 +1,5 @@
 {
-  "name": "salmagundi",
+  "name": "incidents-and-accidents",
   "version": "0.0.0",
   "description": "Experimental sql interface",
   "main": "package.json",
