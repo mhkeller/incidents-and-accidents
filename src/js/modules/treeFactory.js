@@ -85,6 +85,7 @@ export default function treeChart (d3) {
         .attr('dy', 4)
         .text(d => d.data.id);
 
+      // hit state
       enterNodes.append('rect')
         .attr('y', -8)
         .attr('height', 16)
@@ -103,7 +104,6 @@ export default function treeChart (d3) {
           window.currentId = d.data.id;
         });
 
-      // hit state
       allNodes.select('rect')
         .attr('x', d => d.data.children ? -10 : 4)
         .lower();

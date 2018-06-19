@@ -17914,6 +17914,7 @@ function treeChart(d3) {
         return d.data.id;
       });
 
+      // hit state
       enterNodes.append('rect').attr('y', -8).attr('height', 16).attr('width', 8).attr('fill', 'transparent');
 
       var allNodes = enterNodes.merge(nodes).attr('class', function (d) {
@@ -17927,7 +17928,6 @@ function treeChart(d3) {
         window.currentId = d.data.id;
       });
 
-      // hit state
       allNodes.select('rect').attr('x', function (d) {
         return d.data.children ? -10 : 4;
       }).lower();
