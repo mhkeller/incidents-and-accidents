@@ -10,7 +10,7 @@ module.exports = {
   // `ignored` says to ignore sourcemap files. They can be ignored since they are written at the same time as the actual file, so no need to trigger a second reload
   watchOptions: {
     ignoreInitial: true,
-    ignored: new RegExp('\\.map$')
+    ignored: [new RegExp('\\.map$')]
   },
   port: 8000, // Start here and increment upwards
   ui: {

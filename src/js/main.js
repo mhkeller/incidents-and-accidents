@@ -24,20 +24,35 @@ let treeData = {
 
 updateChart();
 
-d3.select('#input-button')
-  .on('click', e => {
-    const query = document.getElementById('input-textarea').value;
-    if (query.trim()) {
-      queryDb(query, (err, json) => {
-        if (err) {
-          console.error(err);
-        } else {
-          saveQuery(query);
-          displayResults(json);
-        }
-      });
+const inputButton = document.getElementById('input-button');
+
+inputButton
+  .addEventListener('click', onQuery);
+
+inputButton.addEventListener('animationend', () => inputButton.classList.remove('active'));
+inputButton.addEventListener('webkitAnimationEnd', () => inputButton.classList.remove('active'));
+
+document.getElementById('input-textarea')
+  .addEventListener('keypress', function (e) {
+    if (e.code === 'Enter' && e.metaKey === true) {
+      inputButton.classList.add('active');
+      inputButton.click();
     }
   });
+
+function onQuery (e) {
+  const query = document.getElementById('input-textarea').value;
+  if (query.trim()) {
+    queryDb(query, (err, json) => {
+      if (err) {
+        console.error(err);
+      } else {
+        saveQuery(query);
+        displayResults(json);
+      }
+    });
+  }
+}
 
 function saveQuery (query) {
   const node = traverse(treeData, window.currentId);
