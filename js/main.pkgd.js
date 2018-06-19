@@ -17914,6 +17914,8 @@ function treeChart(d3) {
         return d.data.id;
       });
 
+      enterNodes.append('rect').attr('y', -8).attr('height', 16).attr('width', 8).attr('fill', 'transparent');
+
       var allNodes = enterNodes.merge(nodes).attr('class', function (d) {
         return 'node ' + (d.children ? ' node--internal' : ' node--leaf');
       }).attr('transform', function (d) {
@@ -17926,9 +17928,9 @@ function treeChart(d3) {
       });
 
       // hit state
-      enterNodes.append('rect').attr('x', function (d) {
-        return d.data.children ? -8 : 4;
-      }).attr('y', -8).attr('height', 16).attr('width', 8).attr('fill', '#f0c');
+      allNodes.select('rect').attr('x', function (d) {
+        return d.data.children ? -10 : 4;
+      }).lower();
 
       allNodes.select('text').attr('x', function (d) {
         return d.data.children ? -8 : 8;
