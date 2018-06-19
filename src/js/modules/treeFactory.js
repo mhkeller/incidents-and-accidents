@@ -85,6 +85,11 @@ export default function treeChart (d3) {
         .attr('dy', 4)
         .text(d => d.data.id);
 
+      enterNodes.append('rect')
+        .attr('y', -8)
+        .attr('height', 16)
+        .attr('width', 8)
+        .attr('fill', 'transparent');
 
       let allNodes = enterNodes
         .merge(nodes)
@@ -99,12 +104,9 @@ export default function treeChart (d3) {
         });
 
       // hit state
-      enterNodes.append('rect')
-        .attr('x', d => d.data.children ? -8 : 4)
-        .attr('y', -8)
-        .attr('height', 16)
-        .attr('width', 8)
-        .attr('fill', '#f0c');
+      allNodes.select('rect')
+        .attr('x', d => d.data.children ? -10 : 4)
+        .lower();
 
       allNodes.select('text')
         .attr('x', d => d.data.children ? -8 : 8)
