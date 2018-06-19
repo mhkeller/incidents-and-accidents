@@ -17925,6 +17925,11 @@ function treeChart(d3) {
         window.currentId = d.data.id;
       });
 
+      // hit state
+      enterNodes.append('rect').attr('x', function (d) {
+        return d.data.children ? -8 : 4;
+      }).attr('y', -8).attr('height', 16).attr('width', 8).attr('fill', '#f0c');
+
       allNodes.select('text').attr('x', function (d) {
         return d.data.children ? -8 : 8;
       }).style('text-anchor', function (d) {

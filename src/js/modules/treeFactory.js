@@ -85,6 +85,7 @@ export default function treeChart (d3) {
         .attr('dy', 4)
         .text(d => d.data.id);
 
+
       let allNodes = enterNodes
         .merge(nodes)
         .attr('class', d => 'node ' + (d.children ? ' node--internal' : ' node--leaf'))
@@ -96,6 +97,14 @@ export default function treeChart (d3) {
           // TODO, redo with dispatch
           window.currentId = d.data.id;
         });
+
+      // hit state
+      enterNodes.append('rect')
+        .attr('x', d => d.data.children ? -8 : 4)
+        .attr('y', -8)
+        .attr('height', 16)
+        .attr('width', 8)
+        .attr('fill', '#f0c');
 
       allNodes.select('text')
         .attr('x', d => d.data.children ? -8 : 8)

@@ -51,7 +51,6 @@
     "glob": "^7.0.5",
     "indian-ocean": "^3.0.1",
     "mkdirp": "^0.5.1",
-    "node-sass": "^4.6.1",
     "postcss": "^6.0.15",
     "queue-async": "^1.2.1",
     "rimraf": "^2.5.2",
