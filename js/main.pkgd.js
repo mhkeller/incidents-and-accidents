@@ -18029,8 +18029,6 @@ var treeData = {
   children: []
 };
 
-updateChart();
-
 var inputButton = document.getElementById('input-button');
 
 inputButton.addEventListener('click', onQuery);
@@ -18068,7 +18066,16 @@ function saveQuery(query) {
   if (!node.children) {
     node.children = [];
   }
-  node.children.push(newChild(query));
+  // Our initial state
+  if (!node.query) {
+    node.query = query;
+    // repeat queries
+  } else if (node.query === query) {
+    return;
+    // new queries
+  } else {
+    node.children.push(newChild(query));
+  }
   updateChart();
 }
 
