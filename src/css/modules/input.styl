@@ -5,6 +5,22 @@ $active-button-color = shade($button-color, 18%)
 #input-container
   margin-bottom 21px
   width 100%
+  position relative
+  &[data-error-text=""]
+    &:before
+      display none
+  &:before
+    content attr(data-error-text)
+    position absolute
+    top 3px
+    left 0
+    transform translate(0, -100%)
+    background-color red
+    color darken(red, 40%)
+    z-index -1
+    padding 3px
+    font-size 14px
+    border 1px solid darken(red, 40%)
   textarea
     width 100%
     font-size 14px

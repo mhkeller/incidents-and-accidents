@@ -17988,11 +17988,25 @@ var uniqueId = function uniqueId(prefix) {
   return prefix ? prefix + id : id;
 };
 
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {
+  return typeof obj;
+} : function (obj) {
+  return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+};
+
 function queryDb(query, cb) {
-  window.fetch("http://localhost:3101?db=mhk&q=" + query).then(function (response) {
-    return response.json();
-  }).then(function (json) {
-    return cb(null, json);
+  window.fetch('http://localhost:3101?db=mhk&q=' + query).then(function (response) {
+    if (response.status === 200) {
+      return response.json();
+    } else {
+      return response.text();
+    }
+  }).then(function (parsedResponse) {
+    if ((typeof parsedResponse === 'undefined' ? 'undefined' : _typeof(parsedResponse)) === 'object') {
+      cb(null, parsedResponse);
+    } else {
+      cb(parsedResponse);
+    }
   }).catch(function (err) {
     return cb(err);
   });
@@ -18030,6 +18044,7 @@ var treeData = {
 };
 
 var inputButton = document.getElementById('input-button');
+var inputContainer = document.getElementById('input-container');
 
 inputButton.addEventListener('click', onQuery);
 
@@ -18053,11 +18068,15 @@ function onQuery(e) {
     queryDb(query, function (err, json) {
       if (err) {
         console.error(err);
+        inputContainer.dataset.errorText = err;
       } else {
+        inputContainer.dataset.errorText = '';
         saveQuery(query);
         displayResults(json);
       }
     });
+  } else {
+    inputContainer.dataset.errorText = 'Please enter a query. For example `SELECT * FROM my_table;`';
   }
 }
 

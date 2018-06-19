@@ -23,6 +23,7 @@ let treeData = {
 };
 
 const inputButton = document.getElementById('input-button');
+const inputContainer = document.getElementById('input-container');
 
 inputButton
   .addEventListener('click', onQuery);
@@ -44,11 +45,15 @@ function onQuery (e) {
     queryDb(query, (err, json) => {
       if (err) {
         console.error(err);
+        inputContainer.dataset.errorText = err;
       } else {
+        inputContainer.dataset.errorText = '';
         saveQuery(query);
         displayResults(json);
       }
     });
+  } else {
+    inputContainer.dataset.errorText = 'Please enter a query. For example `SELECT * FROM my_table;`';
   }
 }
 
