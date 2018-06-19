@@ -22,8 +22,6 @@ let treeData = {
   children: []
 };
 
-updateChart();
-
 const inputButton = document.getElementById('input-button');
 
 inputButton
@@ -59,7 +57,16 @@ function saveQuery (query) {
   if (!node.children) {
     node.children = [];
   }
-  node.children.push(newChild(query));
+  // Our initial state
+  if (!node.query) {
+    node.query = query;
+  // repeat queries
+  } else if (node.query === query) {
+    return;
+  // new queries
+  } else {
+    node.children.push(newChild(query));
+  }
   updateChart();
 }
 
